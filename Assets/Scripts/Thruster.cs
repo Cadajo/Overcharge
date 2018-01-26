@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Thruster : MonoBehaviour
 {
     private static readonly float MaxEnergy = 2;
