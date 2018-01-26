@@ -21,14 +21,24 @@ public class Thruster : MonoBehaviour
         }
     }
 
-    public void AddEnergy(float delta)
+    public float AddEnergy(float delta)
     {
+        float previous = _energy;
         _energy = Mathf.Min(MaxEnergy, _energy + delta);
+        float added = _energy - previous;
+        return added;
     }
 
-    public void SubtractEnergy(float delta)
+    public float SubtractEnergy(float delta)
     {
+        float previous = _energy;
         _energy = Mathf.Max(0, _energy - delta);
+        float substracted = previous - _energy;
+        return substracted;
+    }
+
+    public float GetEnergy () {
+        return _energy;
     }
 
     public void TakeDamage(float damage)
