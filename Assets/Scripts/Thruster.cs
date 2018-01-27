@@ -6,9 +6,24 @@ using UnityEngine;
 public class Thruster : MonoBehaviour
 {
     private static readonly float MaxEnergy = 2;
+    private static readonly float WallHitDamageFactor = 0.01f;
+    private static readonly float BeamHitDamageFactor = 0.05f;
+
+    public enum DamageType
+    {
+        Wall,
+        Beam
+    }
 
     private float _energy = 0.0f;
     private float _damage = 0.0f;
+
+    private Rigidbody _rigidbody;
+
+    void Start()
+    {
+        _rigidbody = transform.parent.GetComponent<Rigidbody>();
+    }
 
     public float AddEnergy(float delta)
     {
@@ -30,9 +45,30 @@ public class Thruster : MonoBehaviour
         return _energy;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, DamageType damageType)
     {
-        _damage += damage;
+        float multiplier;
+        switch (damageType)
+        {
+            case DamageType.Wall:
+            {
+                multiplier = WallHitDamageFactor;
+                break;
+            }
+            case DamageType.Beam:
+            {
+                multiplier = BeamHitDamageFactor;
+                break;
+            }
+            default:
+            {
+                multiplier = WallHitDamageFactor;
+                Debug.LogError("Unknown damage type");
+                break;
+            }
+        }
+        _damage += damage * multiplier;
+        _damage = Mathf.Min(MaxEnergy, _damage);
     }
 
     public float GetDamage()

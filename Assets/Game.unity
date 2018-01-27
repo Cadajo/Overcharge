@@ -520,6 +520,10 @@ Prefab:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f57180d030ebdab488f6374a4264fc23, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f57180d030ebdab488f6374a4264fc23, type: 3}
   m_IsPrefabParent: 0
@@ -732,8 +736,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1960769656}
-  - component: {fileID: 1960769658}
   - component: {fileID: 1960769657}
+  - component: {fileID: 1960769658}
   m_Layer: 0
   m_Name: Top Left
   m_TagString: Untagged
