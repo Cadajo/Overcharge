@@ -22,8 +22,12 @@ public class RaceController : NetworkBehaviour
     {
         _racers.Add(racer, 0);
 
-        racer.transform.position = transform.position + (transform.forward * 3 * _racers.Count);
+        Vector3 p = racer.transform.position = transform.position + (transform.forward * 3 * _racers.Count);
+
         racer.transform.LookAt(transform);
+
+        // set on the ground so that it lifts off
+        racer.transform.position = new Vector3(p.x, 0.13f, p.z);
     }
 
     void OnTriggerEnter(Collider other)
