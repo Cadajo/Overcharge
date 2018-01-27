@@ -5,30 +5,30 @@ using UnityEngine;
 
 public class Thruster : MonoBehaviour
 {
+    AudioSource source;
     private static readonly float MaxEnergy = 2;
     private static readonly float WallHitDamageFactor = 0.01f;
     private static readonly float BeamHitDamageFactor = 0.05f;
+    private static readonly float OverchargeDamageFactor = 0.05f;
 
     public enum DamageType
     {
         Wall,
-        Beam
+        Beam,
+        Overcharge
     }
 
     private float _energy = 0.0f;
-    private float _damage = 0.0f;
+    private float _hp = 2.0f;
 
-    private Rigidbody _rigidbody;
-
-    void Start()
-    {
-        _rigidbody = transform.parent.GetComponent<Rigidbody>();
+    void Start () {
+        source = GetComponent<AudioSource>();
     }
 
     public float AddEnergy(float delta)
     {
         float previous = _energy;
-        _energy = Mathf.Min(MaxEnergy, _energy + delta);
+        _energy = Mathf.Min(_hp, _energy + delta);
         float added = _energy - previous;
         return added;
     }
@@ -43,6 +43,20 @@ public class Thruster : MonoBehaviour
 
     public float GetEnergy () {
         return _energy;
+    }
+
+    public float GetOvercharge () {
+        if (_energy > 1) {
+            float overcharge = Random.Range(1f, 1.4f);
+            if (overcharge > 1.38f) {
+                overcharge += overcharge;
+                TakeDamage(1f, DamageType.Overcharge);
+                source.Play();
+            }
+            return overcharge;
+        } else {
+            return 1;
+        }
     }
 
     public void TakeDamage(float damage, DamageType damageType)
@@ -67,13 +81,13 @@ public class Thruster : MonoBehaviour
                 break;
             }
         }
-        _damage += damage * multiplier;
-        _damage = Mathf.Min(MaxEnergy, _damage);
+        _hp -= damage * multiplier;
+        _hp = Mathf.Max(_hp, 0f);
     }
 
-    public float GetDamage()
+    public float GetHP()
     {
-        return _damage;
+        return _hp;
     }
 
     public bool IsOvercharged() {

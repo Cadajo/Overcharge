@@ -13,6 +13,7 @@ public class EnergySystem : MonoBehaviour {
     float energyInc = 0.1f;
     float energyTank = 4;
     new Rigidbody rigidbody;
+	public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
     
     void Start() {
@@ -60,11 +61,27 @@ public class EnergySystem : MonoBehaviour {
         }
     }
 
-    void FixedUpdate() {
-        thrusters.ForEach((Thruster thruster) => {
-            rigidbody.AddForceAtPosition(transform.forward * thruster.GetEnergy() * AccelerationFactor, thruster.transform.position);
-        });
-    }
+	void FixedUpdate() {
+		/* TODO: make tendency to unflip. this doesn't work
+		rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.x * 0.99f, rigidbody.rotation.y, rigidbody.rotation.z * 0.99f);
+		*/
+
+		// float
+		rigidbody.AddForce(transform.up * floatFactor * Mathf.Max(1 - transform.position.y, 0));
+
+		thrusters.ForEach((Thruster thruster) => {
+			// overcharge causes upwards bump
+			float overcharge = thruster.GetOvercharge();
+			float energy = thruster.GetEnergy();
+			if (overcharge > 1) {
+				rigidbody.AddForceAtPosition(transform.up * overcharge * AccelerationFactor / 10, thruster.transform.position);
+
+			}
+
+			// forward thrust
+			rigidbody.AddForceAtPosition(transform.forward * energy * overcharge * AccelerationFactor, thruster.transform.position);
+		});
+	}
 
     void OnCollisionEnter(Collision collision)
     {
@@ -85,10 +102,18 @@ public class EnergySystem : MonoBehaviour {
         }
     }
 
-    void OnGUI () {
-        GUI.Label(new Rect(10, 10, 100, 20), thrusterTopLeft.GetEnergy().ToString());
-        GUI.Label(new Rect(10, 20, 100, 20), thrusterBottomLeft.GetEnergy().ToString());
-        GUI.Label(new Rect(10, 30, 100, 20), thrusterBottomRight.GetEnergy().ToString());
-        GUI.Label(new Rect(10, 40, 100, 20), thrusterTopRight.GetEnergy().ToString());
-    }
+	void OnGUI () {
+		GUI.Label(new Rect(10, 10, 100, 20),
+		"TL: " + thrusterTopLeft.GetEnergy().ToString()
+        + "/" + thrusterTopLeft.GetHP().ToString());
+		GUI.Label(new Rect(10, 20, 100, 20), 
+		"BL: " + thrusterBottomLeft.GetEnergy().ToString()
+        + "/" + thrusterBottomLeft.GetHP().ToString());
+		GUI.Label(new Rect(10, 30, 100, 20), 
+		"BR: " + thrusterBottomRight.GetEnergy().ToString()
+        + "/" + thrusterBottomRight.GetEnergy().ToString());
+		GUI.Label(new Rect(10, 40, 100, 20), 
+		"TR: " + thrusterTopRight.GetEnergy().ToString()
+        + "/" + thrusterTopRight.GetHP().ToString());
+	}
 }
