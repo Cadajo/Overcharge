@@ -4,15 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class NotLocalPlayerDisabler : NetworkBehaviour {
+
+	public GameObject target;
+
 	void Start () {
 		if (!isLocalPlayer) {
-			gameObject.SetActive(false);
-		}
-	}
-
-	void Update () {
-		if (!isLocalPlayer) {
-			gameObject.SetActive(false);
+			target.SetActive(false);
 		}
 	}
 }

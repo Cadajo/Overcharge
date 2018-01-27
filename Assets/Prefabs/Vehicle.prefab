@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 114972270841977270}
   - component: {fileID: 114490582206554264}
   - component: {fileID: 114348512373073494}
+  - component: {fileID: 114423221840659460}
   m_Layer: 0
   m_Name: Vehicle
   m_TagString: Untagged
@@ -318,7 +319,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1899219151882592}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.000000014901161}
-  m_LocalPosition: {x: 207.9, y: 1.11, z: 0}
+  m_LocalPosition: {x: 213.02591, y: 2, z: -29.791817}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4955868863197978}
@@ -405,7 +406,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1467411012172646}
   m_LocalRotation: {x: 0.18678567, y: -1.3748647e-10, z: -0.000000022351315, w: 0.9824007}
-  m_LocalPosition: {x: -0, y: 2.91, z: -4.84}
+  m_LocalPosition: {x: 0, y: 3.6, z: -6.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4620315239391584}
@@ -1458,6 +1459,18 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114423221840659460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1899219151882592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6263b29f32c33436e8b1e65160bbd840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1467411012172646}
 --- !u!114 &114490582206554264
 MonoBehaviour:
   m_ObjectHideFlags: 1
