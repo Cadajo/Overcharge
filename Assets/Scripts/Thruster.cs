@@ -50,6 +50,10 @@ public class Thruster : MonoBehaviour
     {
         return _damage;
     }
+
+    public bool IsOvercharged() {
+        return _energy > 1f;
+    }
     
     void FixedUpdate ()
     {
