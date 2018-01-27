@@ -10,18 +10,6 @@ public class Thruster : MonoBehaviour
     private float _energy = 0.0f;
     private float _damage = 0.0f;
 
-    public Rigidbody SpaceshipRigidbody = null;
-    public float AccelerationFactor = 5.0f;
-
-    void Start()
-    {
-        if (SpaceshipRigidbody == null)
-        {
-            Debug.LogError("Spaceship rigidbody not set! :(");
-            enabled = false;
-        }
-    }
-
     public float AddEnergy(float delta)
     {
         float previous = _energy;
@@ -54,10 +42,5 @@ public class Thruster : MonoBehaviour
 
     public bool IsOvercharged() {
         return _energy > 1f;
-    }
-    
-    void FixedUpdate ()
-    {
-        SpaceshipRigidbody.AddForceAtPosition(transform.forward * _energy * AccelerationFactor, transform.position);
     }
 }

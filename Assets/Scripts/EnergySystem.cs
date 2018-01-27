@@ -8,13 +8,27 @@ public class EnergySystem : MonoBehaviour {
 	public Thruster thrusterTopRight;
 	public Thruster thrusterBottomLeft;
 	public Thruster thrusterBottomRight;
+	List<Thruster> thrusters;
+
 	float energyInc = 0.1f;
 	float energyTank = 4;
+    new Rigidbody rigidbody;
+    public float AccelerationFactor = 5.0f;
 	
-	void FixedUpdate () {
+	void Start() {
+		rigidbody = GetComponent<Rigidbody>();
+		thrusters = new List<Thruster>();
+		thrusters.Add(thrusterTopLeft);
+		thrusters.Add(thrusterBottomLeft);
+		thrusters.Add(thrusterBottomRight);
+		thrusters.Add(thrusterTopRight);
+	}
+
+	void Update () {
 		// Substract
 		if (Input.GetKeyDown("a")) {
 			energyTank += thrusterTopLeft.SubtractEnergy(energyInc);
+			Debug.Log("a");
 		}
 		if (Input.GetKeyDown("s")) {
 			energyTank += thrusterBottomLeft.SubtractEnergy(energyInc);
@@ -45,6 +59,12 @@ public class EnergySystem : MonoBehaviour {
 			&& energyTank >= energyInc) {
 			energyTank -= thrusterTopRight.AddEnergy(energyInc);
 		}
+	}
+
+	void FixedUpdate() {
+		thrusters.ForEach((Thruster thruster) => {
+			rigidbody.AddForceAtPosition(transform.forward * thruster.GetEnergy() * AccelerationFactor, thruster.transform.position);
+		});
 	}
 
 	void OnGUI () {
