@@ -9,7 +9,7 @@ public class Thruster : MonoBehaviour
     private static readonly float MaxEnergy = 2;
     private static readonly float WallHitDamageFactor = 0.01f;
     private static readonly float BeamHitDamageFactor = 0.05f;
-    private static readonly float OverchargeDamageFactor = 0.05f;
+    private static readonly float OverchargeDamageFactor = 0.01f;
 
     public enum DamageType
     {
@@ -46,11 +46,10 @@ public class Thruster : MonoBehaviour
     }
 
     public float GetOvercharge () {
-        if (_energy > 1) {
-            float overcharge = Random.Range(1f, 1.4f);
-            if (overcharge > 1.38f) {
-                overcharge += overcharge;
-                TakeDamage(1f, DamageType.Overcharge);
+        if (_energy > 1.01f) {
+            float overcharge = Random.Range(1f, _energy * 2);
+            if (overcharge > 2f && Random.Range(0f, 1f) < 0.1f) {
+                TakeDamage(overcharge, DamageType.Overcharge);
                 source.Play();
             }
             return overcharge;
@@ -88,6 +87,7 @@ public class Thruster : MonoBehaviour
         }
         _hp -= damage * multiplier;
         _hp = Mathf.Max(_hp, 0f);
+        _energy = Mathf.Min(_energy, _hp);
     }
 
     public float GetHP()
