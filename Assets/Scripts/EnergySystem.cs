@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Networking;
 
 public class EnergySystem : NetworkBehaviour {
@@ -16,8 +17,11 @@ public class EnergySystem : NetworkBehaviour {
     new Rigidbody rigidbody;
 	public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
-    
+
     void Start() {
+        RaceController controller = FindObjectOfType<RaceController>();
+        controller.AddRacer(gameObject);
+
         rigidbody = GetComponent<Rigidbody>();
         thrusters = new List<Thruster>();
         thrusters.Add(thrusterTopLeft);
