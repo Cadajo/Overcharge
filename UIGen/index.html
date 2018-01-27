@@ -183,7 +183,8 @@ const params = {
     hudColor: '#ffc200',
     frameX: 130,
     frameY: 240,
-    frameEdge: 240
+    frameEdge: 240,
+    debug: true
 }
 const p = params
 
@@ -197,7 +198,9 @@ function render () {
     ctx.beginPath()
     ctx.fillStyle = ctx.strokeStyle = params.hudColor
 
-    ctx.strokeRect(p.frameX, p.frameY, p.frameEdge, p.frameEdge)
+    if (p.debug) {
+        ctx.strokeRect(p.frameX, p.frameY, p.frameEdge, p.frameEdge)
+    }
 
     ctx.arc(x, y, params.radius, 0, 2*PI)
     ctx.stroke()
