@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465934, g: 0.49642956, b: 0.57482487, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -153,8 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpaceshipRigidbody: {fileID: 1394737149}
-  AccelerationFactor: 10
 --- !u!1001 &619125412
 Prefab:
   m_ObjectHideFlags: 0
@@ -279,13 +277,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 905596070}
-  m_LocalRotation: {x: 0.18073936, y: -0, z: -0.00000002235174, w: 0.9835311}
-  m_LocalPosition: {x: 2.842171e-14, y: 1.511, z: -2.6970065}
+  m_LocalRotation: {x: 0.18678567, y: -1.3748647e-10, z: -0.000000022351315, w: 0.9824007}
+  m_LocalPosition: {x: -0, y: 2.91, z: -4.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1394737154}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 20.826, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 21.531, y: 0, z: 0}
 --- !u!81 &905596072
 AudioListener:
   m_ObjectHideFlags: 0
@@ -376,8 +374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpaceshipRigidbody: {fileID: 1394737149}
-  AccelerationFactor: 10
 --- !u!1 &1176576448
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,8 +414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpaceshipRigidbody: {fileID: 1394737149}
-  AccelerationFactor: 10
 --- !u!1001 &1219963318
 Prefab:
   m_ObjectHideFlags: 0
@@ -513,9 +507,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1394737148}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 1
-  m_AngularDrag: 0.5
+  m_AngularDrag: 2
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -583,7 +577,7 @@ Transform:
   m_GameObject: {fileID: 1394737148}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.000000014901161}
   m_LocalPosition: {x: 207.9, y: 1.11, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 905596071}
   - {fileID: 755996788}
@@ -609,6 +603,7 @@ MonoBehaviour:
   thrusterTopRight: {fileID: 88035456}
   thrusterBottomLeft: {fileID: 1176576451}
   thrusterBottomRight: {fileID: 1144436409}
+  AccelerationFactor: 400
 --- !u!1 &1653563651
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,5 +709,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpaceshipRigidbody: {fileID: 1394737149}
-  AccelerationFactor: 10
