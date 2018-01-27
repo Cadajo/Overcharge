@@ -9,4 +9,10 @@ public class NotLocalPlayerDisabler : NetworkBehaviour {
 			gameObject.SetActive(false);
 		}
 	}
+
+	void Update () {
+		if (!isLocalPlayer) {
+			gameObject.SetActive(false);
+		}
+	}
 }
