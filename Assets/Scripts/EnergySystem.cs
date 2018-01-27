@@ -30,6 +30,26 @@ public class EnergySystem : NetworkBehaviour {
         thrusters.Add(thrusterTopRight);
     }
 
+    [SyncVar]
+    private float _e0 = 0f;
+    [SyncVar]
+    private float _hp0 = 2f;
+
+    [SyncVar]
+    private float _e1 = 0f;
+    [SyncVar]
+    private float _hp1 = 2f;
+
+    [SyncVar]
+    private float _e2 = 0f;
+    [SyncVar]
+    private float _hp2 = 2f;
+
+    [SyncVar]
+    private float _e3 = 0f;
+    [SyncVar]
+    private float _hp3 = 2f;
+
     [Command]
     void CmdUpdateThrusters(
         float e0,
@@ -44,21 +64,34 @@ public class EnergySystem : NetworkBehaviour {
         float e3,
         float hp3) {
 
-        thrusterTopLeft.SetEnergy(e0);
-        thrusterTopLeft.SetHP(hp0);
+        _e0 = e0;
+        _e1 = e1;
+        _e2 = e2;
+        _e3 = e3;
 
-        thrusterBottomLeft.SetEnergy(e1);
-        thrusterBottomLeft.SetHP(hp1);
+        _hp0 = hp0;
+        _hp1 = hp1;
+        _hp2 = hp2;
+        _hp3 = hp3;
 
-        thrusterBottomRight.SetEnergy(e2);
-        thrusterBottomRight.SetHP(hp2);
-
-        thrusterTopRight.SetEnergy(e3);
-        thrusterTopRight.SetHP(hp3);
     }
 
     void Update () {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer) {
+            thrusterTopLeft.SetEnergy(_e0);
+            thrusterTopLeft.SetHP(_hp0);
+
+            thrusterBottomLeft.SetEnergy(_e1);
+            thrusterBottomLeft.SetHP(_hp1);
+
+            thrusterBottomRight.SetEnergy(_e2);
+            thrusterBottomRight.SetHP(_hp2);
+
+            thrusterTopRight.SetEnergy(_e3);
+            thrusterTopRight.SetHP(_hp3);
+
+            return;
+        }
 
         bool changed = false;
 

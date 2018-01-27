@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
-public class Thruster : NetworkBehaviour
+public class Thruster : MonoBehaviour
 {
     private static readonly float MaxEnergy = 2;
     private static readonly float WallHitDamageFactor = 0.01f;
@@ -19,10 +19,8 @@ public class Thruster : NetworkBehaviour
         Overcharge
     }
 
-    [SyncVar]
     private float _energy = 0.0f;
 
-    [SyncVar]
     private float _hp = 2.0f;
 
     private AudioSource source;
