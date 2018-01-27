@@ -19,7 +19,12 @@ ModelImporter:
     4300000: Glass
     4300002: Cockpit
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 8aea2e4be7e411d41ae1dae7a939d0aa, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
