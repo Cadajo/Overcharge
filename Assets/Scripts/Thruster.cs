@@ -75,6 +75,7 @@ public class Thruster : MonoBehaviour
                 break;
             }
             case DamageType.Overcharge:
+            {
                 multiplier = OverchargeDamageFactor;
                 break;
             }
