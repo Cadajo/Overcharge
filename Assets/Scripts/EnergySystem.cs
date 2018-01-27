@@ -103,17 +103,18 @@ public class EnergySystem : MonoBehaviour {
     }
 
 	void OnGUI () {
+        string d = "F2";
 		GUI.Label(new Rect(10, 10, 100, 20),
-		"TL: " + thrusterTopLeft.GetEnergy().ToString()
-        + "/" + thrusterTopLeft.GetHP().ToString());
+		"TL: " + thrusterTopLeft.GetEnergy().ToString(d)
+        + "/" + thrusterTopLeft.GetHP().ToString(d));
 		GUI.Label(new Rect(10, 20, 100, 20), 
-		"BL: " + thrusterBottomLeft.GetEnergy().ToString()
-        + "/" + thrusterBottomLeft.GetHP().ToString());
+		"BL: " + thrusterBottomLeft.GetEnergy().ToString(d)
+        + "/" + thrusterBottomLeft.GetHP().ToString(d));
 		GUI.Label(new Rect(10, 30, 100, 20), 
-		"BR: " + thrusterBottomRight.GetEnergy().ToString()
-        + "/" + thrusterBottomRight.GetEnergy().ToString());
+		"BR: " + thrusterBottomRight.GetEnergy().ToString(d)
+        + "/" + thrusterBottomRight.GetHP().ToString(d));
 		GUI.Label(new Rect(10, 40, 100, 20), 
-		"TR: " + thrusterTopRight.GetEnergy().ToString()
-        + "/" + thrusterTopRight.GetHP().ToString());
+		"TR: " + thrusterTopRight.GetEnergy().ToString(d)
+        + "/" + thrusterTopRight.GetHP().ToString(d));
 	}
 }
