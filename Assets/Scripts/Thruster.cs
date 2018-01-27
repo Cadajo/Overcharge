@@ -5,7 +5,6 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(TrailRenderer))]
 public class Thruster : MonoBehaviour
 {
     private static readonly float MaxEnergy = 2;
@@ -28,7 +27,7 @@ public class Thruster : MonoBehaviour
 
     void Start () {
         source = GetComponent<AudioSource>();
-        _trail = GetComponent<TrailRenderer>();
+        _trail = GetComponentInChildren<TrailRenderer>();
         _trail.enabled = false;
     }
 
