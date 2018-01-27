@@ -1,0 +1,212 @@
+fileFormatVersion: 2
+guid: 39646fff800ea3043aa95ee3ed4fb187
+timeCreated: 1517089930
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Box002
+    100004: Building1
+    100006: Building2
+    100008: Building3
+    100010: Cockpit
+    100012: Cockpit 1
+    100014: Cylinder001
+    100016: Glass
+    100018: LightSpot
+    100020: Linedetail
+    100022: Object001
+    100024: Object002
+    100026: Object003
+    100028: Object004
+    100030: OilTank002
+    100032: Panel
+    100034: Plane001
+    100036: Plane002
+    100038: Spaceship
+    100040: Spaceship001
+    100042: Spaceship002
+    100044: Spaceship003
+    100046: Spaceship004
+    100048: Speed
+    100050: Wall
+    400000: //RootNode
+    400002: Box002
+    400004: Building1
+    400006: Building2
+    400008: Building3
+    400010: Cockpit
+    400012: Cockpit 1
+    400014: Cylinder001
+    400016: Glass
+    400018: LightSpot
+    400020: Linedetail
+    400022: Object001
+    400024: Object002
+    400026: Object003
+    400028: Object004
+    400030: OilTank002
+    400032: Panel
+    400034: Plane001
+    400036: Plane002
+    400038: Spaceship
+    400040: Spaceship001
+    400042: Spaceship002
+    400044: Spaceship003
+    400046: Spaceship004
+    400048: Speed
+    400050: Wall
+    2100000: Wall
+    2100002: 01 - Default
+    2100004: No Name
+    2100006: 07 - Default
+    2100008: 08 - Default
+    2300000: //RootNode
+    2300002: Box002
+    2300004: Building1
+    2300006: Building2
+    2300008: Building3
+    2300010: Cockpit 1
+    2300012: Glass
+    2300014: LightSpot
+    2300016: Object001
+    2300018: Object002
+    2300020: Object003
+    2300022: Object004
+    2300024: OilTank002
+    2300026: Panel
+    2300028: Plane001
+    2300030: Plane002
+    2300032: Spaceship
+    2300034: Spaceship001
+    2300036: Spaceship004
+    2300038: Speed
+    2300040: Wall
+    3300000: //RootNode
+    3300002: Box002
+    3300004: Building1
+    3300006: Building2
+    3300008: Building3
+    3300010: Cockpit 1
+    3300012: Glass
+    3300014: LightSpot
+    3300016: Object001
+    3300018: Object002
+    3300020: Object003
+    3300022: Object004
+    3300024: OilTank002
+    3300026: Panel
+    3300028: Plane001
+    3300030: Plane002
+    3300032: Spaceship
+    3300034: Spaceship001
+    3300036: Spaceship004
+    3300038: Speed
+    3300040: Wall
+    4300000: Object001
+    4300002: Plane001
+    4300004: LightSpot
+    4300006: Wall
+    4300008: Speed
+    4300010: Spaceship
+    4300012: Spaceship001
+    4300014: Panel
+    4300016: Box002
+    4300018: Spaceship004
+    4300020: OilTank002
+    4300022: Object002
+    4300024: Object003
+    4300026: Object004
+    4300028: Glass
+    4300030: Cockpit
+    4300032: Plane002
+    4300034: Building3
+    4300036: Building2
+    4300038: Building1
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 384645fbc2f037e4888bb7e14188019e, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
