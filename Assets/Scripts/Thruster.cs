@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 using Random = UnityEngine.Random;
 
-public class Thruster : MonoBehaviour
+public class Thruster : NetworkBehaviour
 {
     private static readonly float MaxEnergy = 2;
     private static readonly float WallHitDamageFactor = 0.01f;
@@ -19,7 +19,10 @@ public class Thruster : MonoBehaviour
         Overcharge
     }
 
+    [SyncVar]
     private float _energy = 0.0f;
+
+    [SyncVar]
     private float _hp = 2.0f;
 
     private AudioSource source;
@@ -31,13 +34,19 @@ public class Thruster : MonoBehaviour
         _trail.enabled = false;
     }
 
+    void Update () {
+        _trail.enabled = (_energy >= 0.1f);
+        _trail.startWidth = 0.3f * (_energy/1);
+        _trail.endWidth = _trail.startWidth * 1.2f;
+        _trail.time = 1f;
+    }
+
     public float AddEnergy(float delta)
     {
         float previous = _energy;
         _energy = Mathf.Min(_hp, _energy + delta);
         float added = _energy - previous;
 
-        _trail.enabled = _energy >= 0.1f;
         return added;
     }
 
@@ -47,9 +56,18 @@ public class Thruster : MonoBehaviour
         _energy = Mathf.Max(0, _energy - delta);
         float substracted = previous - _energy;
 
-        _trail.enabled = _energy >= 0.1f;
         return substracted;
     }
+
+    /* GOD MODE */
+    public void SetEnergy(float energy) {
+        _energy = energy;
+    }
+
+    public void SetHP(float hp) {
+        _hp = hp;
+    }
+    /* GOD MODE */
 
     public float GetEnergy () {
         return _energy;
@@ -97,7 +115,10 @@ public class Thruster : MonoBehaviour
         }
         _hp -= damage * multiplier;
         _hp = Mathf.Max(_hp, 0f);
-        _energy = Mathf.Min(_energy, _hp);
+
+        if (_hp < _energy) {
+            _energy = Mathf.Min(_energy, _hp);
+        }
     }
 
     public float GetHP()

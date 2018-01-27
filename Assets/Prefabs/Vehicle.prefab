@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 82847244646032826}
   - component: {fileID: 136741535085787826}
   - component: {fileID: 114936765495220746}
+  - component: {fileID: 114629792349780842}
   m_Layer: 0
   m_Name: Thruster Top Left
   m_TagString: Finish
@@ -60,6 +61,7 @@ GameObject:
   - component: {fileID: 82966049919996008}
   - component: {fileID: 136745577775081304}
   - component: {fileID: 114726553262968824}
+  - component: {fileID: 114655471240033740}
   m_Layer: 0
   m_Name: Thruster Bottom Right
   m_TagString: Untagged
@@ -131,6 +133,7 @@ GameObject:
   - component: {fileID: 82886691408533480}
   - component: {fileID: 136352872973611574}
   - component: {fileID: 114881777306333458}
+  - component: {fileID: 114935133395804518}
   m_Layer: 0
   m_Name: Thruster Top Right
   m_TagString: Untagged
@@ -151,6 +154,7 @@ GameObject:
   - component: {fileID: 82283429817903048}
   - component: {fileID: 136021062473084980}
   - component: {fileID: 114652161348668894}
+  - component: {fileID: 114355701032942662}
   m_Layer: 0
   m_Name: Thruster Bottom Left
   m_TagString: Untagged
@@ -1459,6 +1463,38 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114355701032942662
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1658357809582940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 18
+    i1: 139
+    i2: 50
+    i3: 47
+    i4: 18
+    i5: 182
+    i6: 180
+    i7: 196
+    i8: 186
+    i9: 1
+    i10: 186
+    i11: 30
+    i12: 244
+    i13: 88
+    i14: 7
+    i15: 127
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114423221840659460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1503,6 +1539,38 @@ MonoBehaviour:
     i15: 127
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114629792349780842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1321937132714876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 18
+    i1: 139
+    i2: 50
+    i3: 47
+    i4: 18
+    i5: 182
+    i6: 180
+    i7: 196
+    i8: 186
+    i9: 1
+    i10: 186
+    i11: 30
+    i12: 244
+    i13: 88
+    i14: 7
+    i15: 127
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114652161348668894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1514,6 +1582,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114655471240033740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1357240943925356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 18
+    i1: 139
+    i2: 50
+    i3: 47
+    i4: 18
+    i5: 182
+    i6: 180
+    i7: 196
+    i8: 186
+    i9: 1
+    i10: 186
+    i11: 30
+    i12: 244
+    i13: 88
+    i14: 7
+    i15: 127
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114723376120290250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1553,6 +1653,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114935133395804518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482033320103582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 18
+    i1: 139
+    i2: 50
+    i3: 47
+    i4: 18
+    i5: 182
+    i6: 180
+    i7: 196
+    i8: 186
+    i9: 1
+    i10: 186
+    i11: 30
+    i12: 244
+    i13: 88
+    i14: 7
+    i15: 127
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114936765495220746
 MonoBehaviour:
   m_ObjectHideFlags: 1
