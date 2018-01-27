@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class EnergySystem : MonoBehaviour {
+public class EnergySystem : NetworkBehaviour {
 
     public Thruster thrusterTopLeft;
     public Thruster thrusterTopRight;
@@ -23,9 +24,12 @@ public class EnergySystem : MonoBehaviour {
         thrusters.Add(thrusterBottomLeft);
         thrusters.Add(thrusterBottomRight);
         thrusters.Add(thrusterTopRight);
+        rigidbody.position = new Vector3(200, 0, 0);
     }
 
     void Update () {
+        if (!isLocalPlayer) return;
+
         // Substract
         if (Input.GetKeyDown("a")) {
             energyTank += thrusterTopLeft.SubtractEnergy(energyInc);
