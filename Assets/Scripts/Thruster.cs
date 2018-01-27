@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(TrailRenderer))]
 public class Thruster : MonoBehaviour
 {
-    AudioSource source;
     private static readonly float MaxEnergy = 2;
     private static readonly float WallHitDamageFactor = 0.01f;
     private static readonly float BeamHitDamageFactor = 0.05f;
@@ -21,8 +23,13 @@ public class Thruster : MonoBehaviour
     private float _energy = 0.0f;
     private float _hp = 2.0f;
 
+    private AudioSource source;
+    private TrailRenderer _trail;
+
     void Start () {
         source = GetComponent<AudioSource>();
+        _trail = GetComponent<TrailRenderer>();
+        _trail.enabled = false;
     }
 
     public float AddEnergy(float delta)
@@ -30,6 +37,8 @@ public class Thruster : MonoBehaviour
         float previous = _energy;
         _energy = Mathf.Min(_hp, _energy + delta);
         float added = _energy - previous;
+
+        _trail.enabled = _energy >= 0.1f;
         return added;
     }
 
@@ -38,6 +47,8 @@ public class Thruster : MonoBehaviour
         float previous = _energy;
         _energy = Mathf.Max(0, _energy - delta);
         float substracted = previous - _energy;
+
+        _trail.enabled = _energy >= 0.1f;
         return substracted;
     }
 
@@ -87,7 +98,6 @@ public class Thruster : MonoBehaviour
         }
         _hp -= damage * multiplier;
         _hp = Mathf.Max(_hp, 0f);
-        _energy = Mathf.Min(_energy, _hp);
     }
 
     public float GetHP()
