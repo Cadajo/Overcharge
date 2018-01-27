@@ -97,6 +97,7 @@ public class Thruster : MonoBehaviour
         }
         _hp -= damage * multiplier;
         _hp = Mathf.Max(_hp, 0f);
+        _energy = Mathf.Min(_energy, _hp);
     }
 
     public float GetHP()
