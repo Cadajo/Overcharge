@@ -74,6 +74,10 @@ public class Thruster : MonoBehaviour
                 multiplier = BeamHitDamageFactor;
                 break;
             }
+            case DamageType.Overcharge:
+                multiplier = OverchargeDamageFactor;
+                break;
+            }
             default:
             {
                 multiplier = WallHitDamageFactor;
