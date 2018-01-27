@@ -11,6 +11,7 @@ public class Thruster : MonoBehaviour
     private float _damage = 0.0f;
 
     public Rigidbody SpaceshipRigidbody = null;
+    public float AccelerationFactor = 5.0f;
 
     void Start()
     {
@@ -57,6 +58,6 @@ public class Thruster : MonoBehaviour
     
     void FixedUpdate ()
     {
-        SpaceshipRigidbody.AddForceAtPosition(transform.forward * _energy, transform.position);
+        SpaceshipRigidbody.AddForceAtPosition(transform.forward * _energy * AccelerationFactor, transform.position);
     }
 }
