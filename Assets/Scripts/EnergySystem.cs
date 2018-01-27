@@ -107,6 +107,8 @@ public class EnergySystem : NetworkBehaviour {
     }
 
 	void OnGUI () {
+        if (!isLocalPlayer) return;
+
         string d = "F2";
 		GUI.Label(new Rect(340, 220, 100, 20),
 		thrusterTopLeft.GetEnergy().ToString(d)
