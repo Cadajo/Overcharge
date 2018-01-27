@@ -30,41 +30,94 @@ public class EnergySystem : NetworkBehaviour {
         thrusters.Add(thrusterTopRight);
     }
 
+    [Command]
+    void CmdUpdateThrusters(
+        float e0,
+        float hp0,
+
+        float e1,
+        float hp1,
+
+        float e2,
+        float hp2,
+
+        float e3,
+        float hp3) {
+
+        thrusterTopLeft.SetEnergy(e0);
+        thrusterTopLeft.SetHP(hp0);
+
+        thrusterBottomLeft.SetEnergy(e1);
+        thrusterBottomLeft.SetHP(hp1);
+
+        thrusterBottomRight.SetEnergy(e2);
+        thrusterBottomRight.SetHP(hp2);
+
+        thrusterTopRight.SetEnergy(e3);
+        thrusterTopRight.SetHP(hp3);
+    }
+
     void Update () {
         if (!isLocalPlayer) return;
+
+        bool changed = false;
 
         // Substract
         if (Input.GetKeyDown("a")) {
             energyTank += thrusterTopLeft.SubtractEnergy(energyInc);
+            changed = true;
         }
         if (Input.GetKeyDown("s")) {
             energyTank += thrusterBottomLeft.SubtractEnergy(energyInc);
+            changed = true;
         }
 
         if (Input.GetKeyDown("d")) {
             energyTank += thrusterBottomRight.SubtractEnergy(energyInc);
+            changed = true;
         }
         if (Input.GetKeyDown("f")) {
             energyTank += thrusterTopRight.SubtractEnergy(energyInc);
+            changed = true;
         }
 
         // Add
         if (Input.GetKeyDown("q")
             && energyTank >= energyInc) {
             energyTank -= thrusterTopLeft.AddEnergy(energyInc);
+            changed = true;
         }
         if (Input.GetKeyDown("w")
             && energyTank >= energyInc) {
             energyTank -= thrusterBottomLeft.AddEnergy(energyInc);
+            changed = true;
         }
 
         if (Input.GetKeyDown("e")
             && energyTank >= energyInc) {
             energyTank -= thrusterBottomRight.AddEnergy(energyInc);
+            changed = true;
         }
         if (Input.GetKeyDown("r")
             && energyTank >= energyInc) {
             energyTank -= thrusterTopRight.AddEnergy(energyInc);
+            changed = true;
+        }
+
+        if (changed) {
+            CmdUpdateThrusters(
+                thrusterTopLeft.GetEnergy(),
+                thrusterTopLeft.GetHP(),
+                
+                thrusterBottomLeft.GetEnergy(),
+                thrusterBottomLeft.GetHP(),
+
+                thrusterBottomRight.GetEnergy(),
+                thrusterBottomRight.GetHP(),
+
+                thrusterTopRight.GetEnergy(),
+                thrusterTopRight.GetHP()
+            );
         }
     }
 
