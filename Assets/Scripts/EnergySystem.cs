@@ -28,7 +28,6 @@ public class EnergySystem : MonoBehaviour {
 		// Substract
 		if (Input.GetKeyDown("a")) {
 			energyTank += thrusterTopLeft.SubtractEnergy(energyInc);
-			Debug.Log("a");
 		}
 		if (Input.GetKeyDown("s")) {
 			energyTank += thrusterBottomLeft.SubtractEnergy(energyInc);
