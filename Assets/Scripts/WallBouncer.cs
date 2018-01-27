@@ -12,8 +12,9 @@ public class WallBouncer : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Vector3 direction = collision.transform.position - transform.position;
-        _rigidbody.AddForceAtPosition(direction.normalized * 100, collision.contacts[0].point, ForceMode.Impulse);
+        Vector3 reflection = Vector3.Reflect(transform.forward, collision.contacts[0].normal);
+        _rigidbody.AddForce(reflection * 10, ForceMode.VelocityChange);
+        //Debug.DrawLine(transform.position, transform.position + reflection * 1000, Color.green, 1000, false);
     }
 
 }
