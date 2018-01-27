@@ -21,6 +21,9 @@ public class RaceController : NetworkBehaviour
     public void AddRacer(GameObject racer)
     {
         _racers.Add(racer, 0);
+
+        racer.transform.position = transform.position + (transform.forward * 3 * _racers.Count);
+        racer.transform.LookAt(transform);
     }
 
     void OnTriggerEnter(Collider other)

@@ -28,7 +28,6 @@ public class EnergySystem : NetworkBehaviour {
         thrusters.Add(thrusterBottomLeft);
         thrusters.Add(thrusterBottomRight);
         thrusters.Add(thrusterTopRight);
-        transform.position = new Vector3(205, 3, 0);
     }
 
     void Update () {
