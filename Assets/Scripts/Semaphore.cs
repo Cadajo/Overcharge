@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Semaphore : MonoBehaviour
 {
-    public Texture[] States = new Texture[4];
+    public Texture[] States = new Texture[5];
 
     private Material _material;
 

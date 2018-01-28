@@ -42,7 +42,9 @@ public class RaceController : NetworkBehaviour
         Vector3 p = racer.transform.position;
         racer.transform.position = new Vector3(p.x, 0.13f, p.z);
 
-        racer.GetComponent<EnergySystem>().SetupColor(Colours[_racers.Count % Colours.Length]);
+        EnergySystem engine = racer.GetComponent<EnergySystem>();
+        engine.SetupColor(Colours[_racers.Count % Colours.Length]);
+        engine.IsLocked = true;
 
         _racers.Add(racer, 0);
     }
@@ -86,13 +88,20 @@ public class RaceController : NetworkBehaviour
             }
         }
 
-        if (!_raceStarted && isServer && Input.GetKeyUp(KeyCode.Space))
+        if (!_raceStarted && isServer)
         {
-            RpcResetRacers();
-            _countdown = true;
-            Semaphore.gameObject.SetActive(true);
-            _currentCount = 3.0f;
-            RpcSetSemaphoreNumber(3);
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                RpcResetRacers();
+                _countdown = true;
+                Semaphore.gameObject.SetActive(true);
+                _currentCount = 3.0f;
+                RpcSetSemaphoreNumber(3);
+            }
+            else
+            {
+                RpcSetSemaphoreNumber(4);
+            }
         }
     }
 
