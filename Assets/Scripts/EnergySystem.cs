@@ -17,6 +17,7 @@ public class EnergySystem : NetworkBehaviour {
     new Rigidbody rigidbody;
     public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
+    private RaceController raceController;
 
     void Awake()
     {
@@ -29,9 +30,22 @@ public class EnergySystem : NetworkBehaviour {
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    void Start() {
-        RaceController controller = FindObjectOfType<RaceController>();
-        controller.AddRacer(gameObject);
+    void Start()
+    {
+        raceController = FindObjectOfType<RaceController>();
+        raceController.AddRacer(gameObject);
+    }
+
+    public override void OnNetworkDestroy()
+    {
+        base.OnNetworkDestroy();
+        
+        raceController.RemoveRacer(gameObject);
+    }
+
+    void OnDisable()
+    {
+        raceController.RemoveRacer(gameObject);
     }
 
     [SyncVar]
@@ -240,7 +254,7 @@ public class EnergySystem : NetworkBehaviour {
 
         thrusters.ForEach(thruster => thruster.SetupColor(color));
     }
-
+    
     public void RestartEngine()
     {
         thrusters.ForEach(thruster => thruster.Restart());
