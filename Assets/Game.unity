@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b60265249241eb4c94d13eb01cb8f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Offset: -3
+  Offset: -2
   PanAxis: 1
 --- !u!65 &196302156
 BoxCollider:
