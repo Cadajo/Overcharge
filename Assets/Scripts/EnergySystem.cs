@@ -240,4 +240,11 @@ public class EnergySystem : NetworkBehaviour {
 
         thrusters.ForEach(thruster => thruster.SetupColor(color));
     }
+
+    public void RestartEngine()
+    {
+        thrusters.ForEach(thruster => thruster.Restart());
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+    }
 }

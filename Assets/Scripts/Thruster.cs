@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class Thruster : MonoBehaviour
 {
-    private static readonly float MaxEnergy = 2;
+    private static readonly float MaxEnergy = 2.0f;
     private static readonly float WallHitDamageFactor = 0.01f;
     private static readonly float BeamHitDamageFactor = 0.05f;
     private static readonly float OverchargeDamageFactor = 0.01f;
@@ -21,7 +21,7 @@ public class Thruster : MonoBehaviour
 
     private float _energy = 0.0f;
 
-    private float _hp = 2.0f;
+    private float _hp = MaxEnergy;
 
     private AudioSource source;
     private TrailRenderer _trail;
@@ -147,5 +147,13 @@ public class Thruster : MonoBehaviour
 
         Texture emissive = Resources.Load<Texture>(basePath + "/Thruster_DefaultMaterial_Emission");
         material.SetTexture("_EmissionMap", emissive);
+    }
+
+    public void Restart()
+    {
+        _hp = MaxEnergy;
+        _energy = 0;
+        _trail.enabled = false;
+        source.Stop();
     }
 }
