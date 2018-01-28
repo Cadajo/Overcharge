@@ -204,6 +204,7 @@ public class EnergySystem : NetworkBehaviour {
         }
 
         int n = (int) (40 * (energyTank/4f));
+        n = Mathf.Min(n, 40);
 		string hpTexName = "TankHUD/tank-hud-"+n;
 		Texture hpTex = (Texture) Resources.Load(hpTexName);
 		tankHUD.material.mainTexture = hpTex;
