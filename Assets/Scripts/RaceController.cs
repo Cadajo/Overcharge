@@ -11,6 +11,12 @@ public class RaceController : NetworkBehaviour
     private Dictionary<GameObject, int> _racers;
     [SyncVar] private bool _raceStarted = false;
 
+    private float _currentCount;
+    private bool _countdown = false;
+    private bool _sempaphoreDisappear = false;
+
+    public Semaphore Semaphore;
+
     void Awake()
     {
         _racers = new Dictionary<GameObject, int>();
@@ -19,6 +25,7 @@ public class RaceController : NetworkBehaviour
     public override void OnNetworkDestroy()
     {
         _racers.Clear();
+        _raceStarted = false;
     }
 
     public void AddRacer(GameObject racer)
@@ -47,9 +54,40 @@ public class RaceController : NetworkBehaviour
 
     void Update()
     {
+        if (_raceStarted && _sempaphoreDisappear && isServer)
+        {
+            _currentCount -= Time.deltaTime;
+
+            int ceil = Mathf.CeilToInt(_currentCount);
+            if (ceil == 0)
+            {
+                RpcSetSemaphoreNumber(-1);
+                _sempaphoreDisappear = false;
+            }
+        }
+
+        if (_raceStarted && isServer && _countdown)
+        {
+            _currentCount -= Time.deltaTime;
+
+            int ceil = Mathf.CeilToInt(_currentCount);
+            RpcSetSemaphoreNumber(ceil);
+
+            if (ceil == 0)
+            {
+                _countdown = false;
+                _currentCount = 5.0f;
+                _sempaphoreDisappear = true;
+            }
+        }
+
         if (!_raceStarted && isServer && Input.GetKeyUp(KeyCode.Space))
         {
             RpcResetRacers();
+            _countdown = true;
+            Semaphore.gameObject.SetActive(true);
+            _currentCount = 3.0f;
+            RpcSetSemaphoreNumber(3);
         }
     }
 
@@ -67,6 +105,20 @@ public class RaceController : NetworkBehaviour
             racer.Key.transform.position = new Vector3(p.x, 0.13f, p.z);
             racer.Key.GetComponent<EnergySystem>().RestartEngine();
             ++i;
+        }
+    }
+
+    [ClientRpc]
+    void RpcSetSemaphoreNumber(int number)
+    {
+        if (number < 0)
+        {
+            Semaphore.gameObject.SetActive(false);
+        }
+        else
+        {
+            Semaphore.gameObject.SetActive(true);
+            Semaphore.SetNumber(number);
         }
     }
 
