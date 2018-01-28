@@ -36,6 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4781369253321142}
   - component: {fileID: 114105756063551174}
+  - component: {fileID: 114561600734134070}
   m_Layer: 0
   m_Name: Thruster BL HUD
   m_TagString: Untagged
@@ -290,6 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4614789942714764}
   - component: {fileID: 114162195521832506}
+  - component: {fileID: 114487403288480032}
   m_Layer: 0
   m_Name: Thruster BR HUD
   m_TagString: Untagged
@@ -1454,8 +1456,8 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.4852941, g: 0.7075536, b: 1, a: 1}
-      key1: {r: 0.4862745, g: 0.7058824, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 1, g: 1, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1754,6 +1756,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1467411012172646}
+--- !u!114 &114487403288480032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1964663817407034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9fdd4d5e23da4954b7bbe325231d3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderer: {fileID: 23290215167985450}
+  thruster: {fileID: 114540818142416144}
 --- !u!114 &114490582206554264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1797,6 +1812,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20525514c7c69f46b8599669b4d9af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114561600734134070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1264861261192064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9fdd4d5e23da4954b7bbe325231d3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderer: {fileID: 23670373206031660}
+  thruster: {fileID: 114383036014079216}
 --- !u!114 &114636549101172572
 MonoBehaviour:
   m_ObjectHideFlags: 1
