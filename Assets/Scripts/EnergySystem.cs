@@ -15,7 +15,7 @@ public class EnergySystem : NetworkBehaviour {
     float energyInc = 0.1f;
     float energyTank = 4;
     new Rigidbody rigidbody;
-	public float floatFactor = 30.0f;
+    public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
 
     void Start() {
@@ -152,29 +152,38 @@ public class EnergySystem : NetworkBehaviour {
                 thrusterTopRight.GetHP()
             );
         }
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 10.0f))
+        {
+            if (hit.transform.tag == "Boxes")
+            {
+                thrusters.ForEach((thruster) => thruster.RecoverDamage(1 * Time.deltaTime));
+            }
+        }
     }
 
-	void FixedUpdate() {
-		/* TODO: make tendency to unflip. this doesn't work
-		rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.x * 0.99f, rigidbody.rotation.y, rigidbody.rotation.z * 0.99f);
-		*/
+    void FixedUpdate() {
+        /* TODO: make tendency to unflip. this doesn't work
+        rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.x * 0.99f, rigidbody.rotation.y, rigidbody.rotation.z * 0.99f);
+        */
 
-		// float
-		rigidbody.AddForce(transform.up * floatFactor * Mathf.Max(1 - transform.position.y, 0));
+        // float
+        rigidbody.AddForce(transform.up * floatFactor * Mathf.Max(1 - transform.position.y, 0));
 
-		thrusters.ForEach((Thruster thruster) => {
-			// overcharge causes upwards bump
-			float overcharge = thruster.GetOvercharge();
-			float energy = thruster.GetEnergy();
-			if (overcharge > 1) {
-				rigidbody.AddForceAtPosition(transform.up * overcharge * AccelerationFactor / 10, thruster.transform.position);
+        thrusters.ForEach((Thruster thruster) => {
+            // overcharge causes upwards bump
+            float overcharge = thruster.GetOvercharge();
+            float energy = thruster.GetEnergy();
+            if (overcharge > 1) {
+                rigidbody.AddForceAtPosition(transform.up * overcharge * AccelerationFactor / 10, thruster.transform.position);
 
-			}
+            }
 
-			// forward thrust
-			rigidbody.AddForceAtPosition(transform.forward * energy * overcharge * AccelerationFactor, thruster.transform.position);
-		});
-	}
+            // forward thrust
+            rigidbody.AddForceAtPosition(transform.forward * energy * overcharge * AccelerationFactor, thruster.transform.position);
+        });
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -195,21 +204,21 @@ public class EnergySystem : NetworkBehaviour {
         }
     }
 
-	void OnGUI () {
+    void OnGUI () {
         if (!isLocalPlayer) return;
 
         string d = "F2";
-		GUI.Label(new Rect(340, 220, 100, 20),
-		thrusterTopLeft.GetEnergy().ToString(d)
+        GUI.Label(new Rect(340, 220, 100, 20),
+        thrusterTopLeft.GetEnergy().ToString(d)
         + "/" + thrusterTopLeft.GetHP().ToString(d));
-		GUI.Label(new Rect(320, 250, 100, 20),
-		thrusterBottomLeft.GetEnergy().ToString(d)
+        GUI.Label(new Rect(320, 250, 100, 20),
+        thrusterBottomLeft.GetEnergy().ToString(d)
         + "/" + thrusterBottomLeft.GetHP().ToString(d));
-		GUI.Label(new Rect(535, 250, 100, 20),
-		thrusterBottomRight.GetEnergy().ToString(d)
+        GUI.Label(new Rect(535, 250, 100, 20),
+        thrusterBottomRight.GetEnergy().ToString(d)
         + "/" + thrusterBottomRight.GetHP().ToString(d));
-		GUI.Label(new Rect(515, 220, 100, 20),
-		thrusterTopRight.GetEnergy().ToString(d)
+        GUI.Label(new Rect(515, 220, 100, 20),
+        thrusterTopRight.GetEnergy().ToString(d)
         + "/" + thrusterTopRight.GetHP().ToString(d));
-	}
+    }
 }

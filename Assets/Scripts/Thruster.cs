@@ -122,6 +122,11 @@ public class Thruster : MonoBehaviour
         }
     }
 
+    public void RecoverDamage(float recovery)
+    {
+        _hp = Mathf.Min(MaxEnergy, recovery + _hp);
+    }
+
     public float GetHP()
     {
         return _hp;
