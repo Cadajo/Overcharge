@@ -6,6 +6,14 @@ public class SpritePanner : MonoBehaviour
 {
     public float Offset = 0.1f;
 
+    public enum Axis
+    {
+        X,
+        Y
+    }
+
+    public Axis PanAxis = Axis.X;
+
     private MeshRenderer _renderer;
 
     // Use this for initialization
@@ -18,7 +26,17 @@ public class SpritePanner : MonoBehaviour
     void Update ()
     {
         Vector2 offset = _renderer.material.mainTextureOffset;
-        offset.x = (offset.x + (Offset * Time.deltaTime)) % 1;
+        float deltaMovement = (Offset * Time.deltaTime);
+
+        if (PanAxis == Axis.X)
+        {
+            offset.x = (offset.x + deltaMovement) % 1;
+        }
+        else
+        {
+            offset.y = (offset.y + deltaMovement) % 1;
+        }
+
         _renderer.material.mainTextureOffset = offset;
     }
 }
