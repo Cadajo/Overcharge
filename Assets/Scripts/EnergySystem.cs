@@ -13,12 +13,16 @@ public class EnergySystem : NetworkBehaviour {
     List<Thruster> thrusters;
 
     float energyInc = 0.1f;
-    float energyTank = 4;
+    float energyTank = 4f;
+    private static readonly float energyTankMax = 4f;
     new Rigidbody rigidbody;
     public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
     private RaceController raceController;
     [SyncVar] public bool IsLocked = true;
+
+
+    public MeshRenderer tankHUD;
 
     void Awake()
     {
@@ -119,20 +123,32 @@ public class EnergySystem : NetworkBehaviour {
 
         // Substract
         if (Input.GetKeyDown("a")) {
-            energyTank += thrusterTopLeft.SubtractEnergy(energyInc);
+            energyTank += Mathf.Min(
+                thrusterTopLeft.SubtractEnergy(energyInc),
+                energyTankMax
+            );
             changed = true;
         }
         if (Input.GetKeyDown("s")) {
-            energyTank += thrusterBottomLeft.SubtractEnergy(energyInc);
+            energyTank += Mathf.Min(
+                thrusterBottomLeft.SubtractEnergy(energyInc),
+                energyTankMax
+            );
             changed = true;
         }
 
         if (Input.GetKeyDown("d")) {
-            energyTank += thrusterBottomRight.SubtractEnergy(energyInc);
+            energyTank += Mathf.Min(
+                thrusterBottomRight.SubtractEnergy(energyInc),
+                energyTankMax
+            );
             changed = true;
         }
         if (Input.GetKeyDown("f")) {
-            energyTank += thrusterTopRight.SubtractEnergy(energyInc);
+            energyTank += Mathf.Min(
+                thrusterTopRight.SubtractEnergy(energyInc),
+                energyTankMax
+            );
             changed = true;
         }
 
@@ -181,8 +197,16 @@ public class EnergySystem : NetworkBehaviour {
             if (hit.transform.tag == "Boxes")
             {
                 thrusters.ForEach((thruster) => thruster.RecoverDamage(1 * Time.deltaTime));
+
+                float availableTank = 4f - energyTank;
+                energyTank += Mathf.Min(1f * Time.deltaTime, availableTank);
             }
         }
+
+        int n = (int) (40 * (energyTank/4f));
+		string hpTexName = "TankHUD/tank-hud-"+n;
+		Texture hpTex = (Texture) Resources.Load(hpTexName);
+		tankHUD.material.mainTexture = hpTex;
     }
 
     void FixedUpdate() {

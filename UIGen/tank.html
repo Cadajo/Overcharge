@@ -1,0 +1,378 @@
+<!doctype html5>
+<head>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background: lightgray;
+        }
+        canvas {
+            width: 600px;
+            height: 600px;
+        }
+
+        #reference {
+            display: none;
+            width: 200%;
+            opacity: 0.1;
+            z-index: 1;
+            position: fixed;
+            top: -270px;
+            left: -353px;
+        }
+
+        .dg.ac {
+            z-index: 2 !important;
+        }
+    </style>
+</head>
+<body>
+<img id="reference" src="screenshot.png">
+<script type="text/javascript" src="dat.gui.min.js"></script>
+<script type="text/javascript" src="download.js"></script>
+<script>
+
+let width, height
+const canvas = document.createElement('canvas')
+const ctx = canvas.getContext('2d')
+document.body.appendChild(canvas)
+const { random, round, abs, floor, min, max, PI, sin, cos } = Math
+const start = Date.now()
+let counter
+let last = Date.now()
+
+function getRandomColor () {
+    return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+}
+
+function ffor00 () {
+    return round(random()) ? 'ff' : '00'
+}
+
+function getRandomNeonColor () {
+    return `#${ffor00()}${ffor00()}${ffor00()}`
+}
+
+/*
+window.onresize = function () {
+    width = window.innerWidth
+    height = window.innerHeight
+    canvas.width = width * 2
+    canvas.height = height * 2
+    ctx.scale(2, 2)
+}
+window.onresize()
+*/
+
+width = height = 600
+/*
+width = window.innerWidth
+height = window.innerHeight
+/**/
+canvas.style.width = canvas.style.height = width
+canvas.width = width * 2
+canvas.height = height * 2
+ctx.scale(2, 2)
+</script>
+<!--<script src="render.js"></script>-->
+<script>
+const FPS_ENABLED = false
+function renderFPS () {
+    ctx.clearRect(0, 0, 50, 20)
+    ctx.fillStyle = 'blue'
+    ctx.fillText(delta, 20, 20)
+}
+
+function loop () {
+    requestAnimationFrame(loop)
+    counter = Date.now() - start
+    delta = Date.now() - last
+    last = Date.now()
+    window.render && render()
+    if (FPS_ENABLED) renderFPS()
+}
+ctx.fillStyle = 'white'
+ctx.fillRect(0,0,width,height)
+window.init && init()
+loop()
+
+
+// screenshot generator
+document.addEventListener('keypress', function (e) {
+    console.log(e)
+    if (e.code === "Space") screenshot()
+})
+
+let n = 0
+function screenshot () {
+    const frame = document.createElement('canvas')
+    frame.width = frame.height = p.frameEdge*2
+    const frameCtx = frame.getContext('2d')
+    frameCtx.drawImage(canvas, p.frameX*2, p.frameY*2, p.frameEdge*2, p.frameEdge*2, 0, 0, p.frameEdge*2, p.frameEdge*2)
+
+/*
+    const img = new Image()
+    img.width = img.height = frame.width
+    img.src = 
+    document.body.appendChild(img)
+    */
+    download(frame.toDataURL(), `tank-hud-${n++}.png`, "image/png")
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+//https://codepen.io/njmcode/pen/axoyD
+// Converts a #ffffff hex string into an [r,g,b] array
+var h2r = function(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : null;
+};
+
+// Inverse of the above
+var r2h = function(rgb) {
+    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+};
+
+// Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
+// Taken from the awesome ROT.js roguelike dev library at
+// https://github.com/ondras/rot.js
+var _interpolateColor = function(color1, color2, factor) {
+  if (arguments.length < 3) { factor = 0.5; }
+  var result = color1.slice();
+  for (var i=0;i<3;i++) {
+    result[i] = Math.round(result[i] + factor*(color2[i]-color1[i]));
+  }
+  return result;
+};
+</script>
+
+<script>
+const params = {
+    x: 100,
+    y: 100,
+    hudRadius: 90,
+    hudWidth: 3,
+    hudSteps: 180,
+    arcStart: 0,
+    arcEnd: PI,
+    sectionEnd: 0.1,
+    hudColor: '#ffffff',
+    sectionColorStart: '#a7eaff',
+    sectionColorEnd: '#0000ff',
+    ripColor: '#000000',
+    ripAlpha: 0.6,
+    frameX: 0,
+    frameY: 0,
+    frameEdge: 200,
+    debug: false,
+    signalSteps: 10,
+    signalOffset: 3.7,
+    sectionOnly: false
+}
+const p = params
+
+function easeOutQuint (t) { return 1+(--t)*t*t*t*t }
+function easeInOutQuint (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+function easeOutCubic(t) { return (--t)*t*t+1 }
+
+let overchargedRadius = 155.2258016117966
+
+p.sectionEnd = 0
+let inc = (PI/2)/40
+function render () {
+    if (p.sectionEnd > PI/2 + inc) return
+    let { x, y, arcStart, arcEnd, hudRadius, maxHudRadius, sectionEnd, sectionOnly, hp } = params
+
+    /*
+    // hp constraints
+    hp = min(hp, p.arcEnd)
+    hp = max(hp, p.arcStart)
+    if (sectionOnly) {
+        hp = arcEnd
+    }
+
+    // section end constraints
+    sectionEnd = min(max(sectionEnd, p.arcStart), hp)
+    */
+
+    ctx.globalAlpha = 1
+    ctx.clearRect(0, 0, width, height)
+
+    if (p.debug) {
+        ctx.beginPath()
+        ctx.lineWidth = p.hudWidth
+        ctx.fillStyle = ctx.strokeStyle = params.hudColor
+
+        // frame
+        ctx.strokeRect(p.frameX, p.frameY, p.frameEdge, p.frameEdge)
+    }
+
+    // fill rip
+    /*
+    let maxDist = 1.57, radius
+    if (hp <= p.arcEnd && !sectionOnly) {
+        ctx.save()
+        ctx.globalAlpha = p.ripAlpha
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, hp, arcEnd)
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = p.hudColor
+        for (let i = arcEnd;
+            i >= hp;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        }
+        i = hp
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.fillStyle = p.ripColor
+        ctx.fill()
+        ctx.restore()
+    }
+    */
+
+    //section
+    if (sectionEnd > 0) {
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, PI/2 - sectionEnd, PI/2 + sectionEnd)
+        const colorStart = h2r(p.sectionColorStart)
+        const colorEnd = h2r(p.sectionColorEnd)
+        let first = true
+        for (let i = 0;
+            i <= sectionEnd;
+            i += (PI/2) / params.hudSteps) {
+
+            if (!first) {
+                let factor = max(0, min(1, (sectionEnd - i)/(PI/2)))
+                let color = _interpolateColor(colorStart, colorEnd, factor)
+                ctx.fillStyle = ctx.strokeStyle = r2h(color)
+                // ctx.fillStyle = 'blue'
+                ctx.lineTo(x + hudRadius * cos(PI/2 - i),
+                           y + hudRadius * sin(PI/2 - i))
+                ctx.lineTo(x + hudRadius * cos(PI/2 + i),
+                           y + hudRadius * sin(PI/2 + i))
+                ctx.closePath()
+                ctx.fill()
+            }
+            first = false
+
+            ctx.beginPath()
+            ctx.moveTo(x + hudRadius * cos(PI/2 + i),
+                       y + hudRadius * sin(PI/2 + i))
+            ctx.lineTo(x + hudRadius * cos(PI/2 - i),
+                       y + hudRadius * sin(PI/2 - i))
+        }
+        i = sectionEnd
+        ctx.lineTo(x + hudRadius * cos(PI/2 + i),
+                    y + hudRadius * sin(PI/2 + i))
+        ctx.lineTo(x + hudRadius * cos(PI/2 - i),
+                   y + hudRadius * sin(PI/2 - i))
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    ctx.lineWidth = p.hudWidth + 1
+    ctx.strokeStyle = 'white'
+    ctx.beginPath()
+    ctx.arc(x, y, hudRadius, 0, PI)
+    ctx.closePath()
+    ctx.stroke()
+
+    screenshot()
+    p.sectionEnd += inc
+}
+
+document.addEventListener('mousemove', (e) => {
+    // params.offset = (e.pageX/window.innerWidth) * 50
+    // params.weight = (e.pageY/window.innerHeight) * 20
+    //params.fillDisplacement =  0.01 + (e.pageX/window.innerWidth) * 50
+    params.fillWeight = 0.01 + (e.pageY/window.innerHeight) * 20
+    params.fillDisplacement =  0.01 + (e.pageX/window.innerWidth) * 50
+})
+</script>
+    
+
+
+
+
+
+
+
+
+
+
+
+<script>
+const gui = new dat.GUI()
+for (let param in params) {
+    const value = params[param]
+    const isColor = (typeof value === 'string' && value[0] === '#')
+    if (isColor) gui.addColor(params, param)
+    else gui.add(params, param)
+}
+</script>
+</body>
