@@ -22,7 +22,6 @@ public class ThrusterBottomHUD : MonoBehaviour {
 			n = overchargeFrame + (int)Mathf.Floor((maxFrame - overchargeFrame) * (hp - 1.1f)/.9f);
 		}
 		string hpTexName = "ThrusterBottomHUD/thruster-bottom-hud-hp-"+n;
-		Debug.Log(hpTexName);
 		Texture hpTex = (Texture) Resources.Load(hpTexName);
 		hpRenderer.material.mainTexture = hpTex;
 
