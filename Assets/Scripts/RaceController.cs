@@ -11,6 +11,8 @@ struct Racer
 
 public class RaceController : NetworkBehaviour
 {
+    private static readonly string[] Colours = {"Blue", "Green", "Grey", "Orange", "Pink", "Purple", "Red", "Yellow"};
+
     private Dictionary<GameObject, int> _racers;
 
     void Start()
@@ -28,6 +30,8 @@ public class RaceController : NetworkBehaviour
 
         // set on the ground so that it lifts off
         racer.transform.position = new Vector3(p.x, 0.13f, p.z);
+
+        racer.GetComponent<EnergySystem>().SetupColor(Colours[(_racers.Count - 1) % Colours.Length]);
     }
 
     void OnTriggerEnter(Collider other)

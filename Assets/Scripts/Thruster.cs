@@ -135,4 +135,17 @@ public class Thruster : MonoBehaviour
     public bool IsOvercharged() {
         return _energy > 1f;
     }
+
+    public void SetupColor(string color)
+    {
+        Material material = GetComponent<MeshRenderer>().material;
+
+
+        string basePath = "Spaceship/Thruster/" + color;
+        Texture baseColor = Resources.Load<Texture>(basePath + "/Thruster_DefaultMaterial_AlbedoTransparency");
+        material.SetTexture("_MainTex", baseColor);
+
+        Texture emissive = Resources.Load<Texture>(basePath + "/Thruster_DefaultMaterial_Emission");
+        material.SetTexture("_EmissionMap", emissive);
+    }
 }

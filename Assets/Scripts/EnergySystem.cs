@@ -18,16 +18,20 @@ public class EnergySystem : NetworkBehaviour {
     public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
 
-    void Start() {
-        RaceController controller = FindObjectOfType<RaceController>();
-        controller.AddRacer(gameObject);
-
-        rigidbody = GetComponent<Rigidbody>();
+    void Awake()
+    {
         thrusters = new List<Thruster>();
         thrusters.Add(thrusterTopLeft);
         thrusters.Add(thrusterBottomLeft);
         thrusters.Add(thrusterBottomRight);
         thrusters.Add(thrusterTopRight);
+
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
+    void Start() {
+        RaceController controller = FindObjectOfType<RaceController>();
+        controller.AddRacer(gameObject);
     }
 
     [SyncVar]
@@ -220,5 +224,20 @@ public class EnergySystem : NetworkBehaviour {
         GUI.Label(new Rect(515, 220, 100, 20),
         thrusterTopRight.GetEnergy().ToString(d)
         + "/" + thrusterTopRight.GetHP().ToString(d));
+    }
+
+    public void SetupColor(string color)
+    {
+        Material material = GetComponentInChildren<MeshRenderer>().material;
+
+
+        string basePath = "Spaceship/Cockpit/" + color;
+        Texture baseColor = Resources.Load<Texture>(basePath + "/Cockpit_DefaultMaterial_AlbedoTransparency");
+        material.SetTexture("_MainTex", baseColor);
+
+        Texture emissive = Resources.Load<Texture>(basePath + "/Cockpit_DefaultMaterial_Emission");
+        material.SetTexture("_EmissionMap", emissive);
+
+        thrusters.ForEach(thruster => thruster.SetupColor(color));
     }
 }
