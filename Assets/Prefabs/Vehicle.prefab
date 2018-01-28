@@ -2520,6 +2520,7 @@ MonoBehaviour:
   thrusterBottomRight: {fileID: 114540818142416144}
   floatFactor: 4000
   AccelerationFactor: 700
+  IsLocked: 0
 --- !u!114 &114972270841977270
 MonoBehaviour:
   m_ObjectHideFlags: 1
