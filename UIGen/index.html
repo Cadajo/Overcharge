@@ -14,6 +14,7 @@
         }
 
         #reference {
+            display: none;
             width: 200%;
             opacity: 0.1;
             z-index: 1;
@@ -30,7 +31,7 @@
 <body>
 <img id="reference" src="screenshot.png">
 <script type="text/javascript" src="dat.gui.min.js"></script>
-<script type="text/javascript" src="http://danml.com/js/download.js"></script>
+<script type="text/javascript" src="download.js"></script>
 <script>
 
 let width, height
@@ -117,7 +118,7 @@ function screenshot () {
     img.src = 
     document.body.appendChild(img)
     */
-    download(frame.toDataURL(), `thruster-bottom-hud-${n++}.png`, "image/png")
+    download(frame.toDataURL(), `thruster-bottom-hud-energy-${n++}.png`, "image/png")
 }
 </script>
 
@@ -215,6 +216,7 @@ const params = {
     hudSteps: 180,
     arcStart: 1.57,
     arcEnd: 3.8,
+    hp: 3.8,
     sectionEnd: 2.8,
     overchargeStart: 3,
     hudColor: '#ffffff',
@@ -228,12 +230,15 @@ const params = {
     sectionColorEnd: '#0000ff',
     overchargeColorStart: '#ffc200',
     overChargeColorEnd: '#ff0000',
+    ripColor: '#000000',
+    ripAlpha: 0.6,
     frameX: 130,
     frameY: 360,
     frameEdge: 240,
     debug: false,
     signalSteps: 10,
-    signalOffset: 3.7
+    signalOffset: 3.7,
+    sectionOnly: true
 }
 const p = params
 
@@ -242,8 +247,21 @@ function easeInOutQuint (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 function easeOutCubic(t) { return (--t)*t*t+1 }
 
 let overchargedRadius = 155.2258016117966
+p.sectionEnd = p.arcStart
+
 function render () {
-    let { x, y, arcStart, arcEnd, hudRadius, maxHudRadius, sectionEnd } = params
+    if (p.sectionEnd > p.arcEnd + 0.1) return
+    let { x, y, arcStart, arcEnd, hudRadius, maxHudRadius, sectionEnd, sectionOnly, hp } = params
+
+    // hp constraints
+    hp = min(hp, p.arcEnd)
+    hp = max(hp, p.arcStart)
+    if (sectionOnly) {
+        hp = arcEnd
+    }
+
+    // section end constraints
+    sectionEnd = min(max(sectionEnd, p.arcStart), hp)
 
     ctx.globalAlpha = 1
     ctx.clearRect(0, 0, width, height)
@@ -260,100 +278,159 @@ function render () {
         ctx.stroke()
     }
 
-    //section
-    ctx.beginPath()
-    ctx.arc(x, y, hudRadius, arcStart, sectionEnd)
+    // fill rip
     let maxDist = 1.57, radius
-    const isOvercharged = (sectionEnd > p.overchargeStart)
-    const colorStart = h2r(isOvercharged
-        ? p.overchargeColorStart
-        : p.sectionColorStart)
-    const colorEnd = h2r(isOvercharged
-        ? p.overChargeColorEnd
-        : p.sectionColorEnd)
-    let first = true
-    for (let i = arcEnd;
-         i >= arcStart;
-         i += (arcStart - arcEnd) / params.hudSteps) {
-        let leftDistance = abs(i - arcEnd)
-        let dist = Math.min(leftDistance, abs(arcStart - i))
-        radius = (maxHudRadius - hudRadius)
-                     * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
-                     + hudRadius
-        if (i <= sectionEnd) {
-            if (!first) {
-                let factor = Math.min(1, (i - sectionEnd)/(arcStart - p.overchargeStart))
-                let color = _interpolateColor(colorStart, colorEnd, factor)
-                ctx.fillStyle = ctx.strokeStyle = r2h(color)
-                ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
-                ctx.lineTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
-                ctx.closePath()
-                ctx.fill()
-                ctx.lineWidth = 1
-                ctx.stroke()
-            }
-            first = false
-
-            ctx.beginPath()
-            ctx.moveTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
+    if (hp <= p.arcEnd && !sectionOnly) {
+        ctx.save()
+        ctx.globalAlpha = p.ripAlpha
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, hp, arcEnd)
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = p.hudColor
+        for (let i = arcEnd;
+            i >= hp;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
             ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
         }
+        i = hp
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.fillStyle = p.ripColor
+        ctx.fill()
+        ctx.restore()
     }
-    i = arcStart
-    ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
-    ctx.closePath()
-    ctx.fill()
 
-    // limit
-    ctx.save()
-    ctx.beginPath()
-    ctx.globalAlpha = 0.5
-    ctx.lineWidth = p.hudWidth
-    ctx.strokeStyle = 'white'
-    ctx.moveTo(x + hudRadius * cos(p.overchargeStart),
-               y + hudRadius * sin(p.overchargeStart));
-    const hudWidth = overchargedRadius - hudRadius
-    for (let k = 0; k <= p.signalSteps; k++) {
-        const factor = k/p.signalSteps
-        const mult = (k % 2 == 0 ? 1 : -1)
-        ctx.lineTo(x +
-            ((hudWidth * factor) + hudRadius) * cos(p.overchargeStart)
-            + mult*p.signalOffset * cos(p.overchargeStart + PI/2),
-            y +
-            ((hudWidth * factor) + hudRadius) * sin(p.overchargeStart)
-            + mult*p.signalOffset * sin(p.overchargeStart + PI/2)
-        );
+    //section
+    maxDist = 1.57, radius
+    if (p.sectionEnd > p.arcStart) {
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, arcStart, sectionEnd)
+        const isOvercharged = (sectionEnd > p.overchargeStart)
+        const colorStart = h2r(isOvercharged
+            ? p.overchargeColorStart
+            : p.sectionColorStart)
+        const colorEnd = h2r(isOvercharged
+            ? p.overChargeColorEnd
+            : p.sectionColorEnd)
+        let first = true
+        for (let i = arcEnd;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            if (i <= sectionEnd) {
+                if (!first) {
+                    let factor = Math.min(1, (i - sectionEnd)/(arcStart - p.overchargeStart))
+                    let color = _interpolateColor(colorStart, colorEnd, factor)
+                    ctx.fillStyle = ctx.strokeStyle = r2h(color)
+                    ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+                    ctx.lineTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
+                    ctx.closePath()
+                    ctx.fill()
+                    ctx.lineWidth = 1
+                    ctx.stroke()
+                }
+                first = false
+
+                ctx.beginPath()
+                ctx.moveTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
+                ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+            }
+        }
+        i = arcStart
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.fill()
     }
-    ctx.stroke()
-    ctx.restore()
+
+    // zigzag overcharge limit
+    if (p.overchargeStart < hp && !sectionOnly) {
+        ctx.save()
+        ctx.beginPath()
+        ctx.globalAlpha = 0.5
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = 'white'
+        ctx.moveTo(x + hudRadius * cos(p.overchargeStart),
+                y + hudRadius * sin(p.overchargeStart));
+        const hudWidth = overchargedRadius - hudRadius
+        for (let k = 0; k <= p.signalSteps; k++) {
+            const factor = k/p.signalSteps
+            const mult = (k % 2 == 0 ? 1 : -1)
+            ctx.lineTo(x +
+                ((hudWidth * factor) + hudRadius) * cos(p.overchargeStart)
+                + mult*p.signalOffset * cos(p.overchargeStart + PI/2),
+                y +
+                ((hudWidth * factor) + hudRadius) * sin(p.overchargeStart)
+                + mult*p.signalOffset * sin(p.overchargeStart + PI/2)
+            );
+        }
+        ctx.stroke()
+        ctx.restore()
+    }
 
     // outline
-    ctx.beginPath()
-    ctx.arc(x, y, hudRadius, arcStart, arcEnd)
-    ctx.lineWidth = p.hudWidth
-    ctx.strokeStyle = p.hudColor
-    maxDist = 1.57, radius
-    overchargedRadius = undefined
-    for (let i = arcEnd;
-         i >= arcStart;
-         i += (arcStart - arcEnd) / params.hudSteps) {
-        let leftDistance = abs(i - arcEnd)
-        let dist = Math.min(leftDistance, abs(arcStart - i))
-        radius = (maxHudRadius - hudRadius)
-                     * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
-                     + hudRadius
-        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
-        if (i < p.overchargeStart && overchargedRadius == undefined) {
-            overchargedRadius = radius
+    if (!sectionOnly) {
+        ctx.save()
+        ctx.globalAlpha = 0.3
+        // ctx.beginPath()
+        // ctx.arc(x, y, hudRadius, arcStart, arcEnd)
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = p.hudColor
+        maxDist = 1.57, radius
+        overchargedRadius = undefined
+        for (let i = arcEnd;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            //ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+            if (i < p.overchargeStart && overchargedRadius == undefined) {
+                overchargedRadius = radius
+            }
         }
+        // ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        // ctx.closePath()
+        // ctx.stroke()
+        ctx.restore()
     }
-    ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
-    ctx.closePath()
-    ctx.stroke()
+    // outline hp
+    if (hp > p.arcStart && !sectionOnly) {
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, arcStart, hp)
+        ctx.lineWidth = p.hudWidth + 1
+        ctx.strokeStyle = p.hudColor
+        maxDist = 1.57, radius
+        for (let i = hp;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        }
+        i = arcStart
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.stroke()
+        ctx.restore()
+    }
 
-    //screenshot()
-    sectionEnd += 0.1
-    sectionEnd = min(sectionEnd, arcEnd)
+    screenshot()
+    p.sectionEnd += 0.1
 }
 
 document.addEventListener('mousemove', (e) => {

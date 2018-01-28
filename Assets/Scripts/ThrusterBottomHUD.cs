@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class ThrusterBottomHUD : MonoBehaviour {
 
-	public new MeshRenderer renderer;
+	public MeshRenderer hpRenderer;
+	public MeshRenderer energyRenderer;
 	public Thruster thruster;
 	// Use this for initialization
-	private static readonly int textureCount = 23;
-
-	void Start () {
-	}
+	private static readonly int maxFrame = 23;
+	private static readonly int overchargeFrame = 15;
 	
 	// Update is called once per frame
 	void Update () {
+		// hp
 		int n = 0;
+		float hp = thruster.GetHP();
+		if (hp <= 1.1f) {
+			n = (int)Mathf.Floor(overchargeFrame * (hp / 1.1f));
+		} else {
+			n = overchargeFrame + (int)Mathf.Floor((maxFrame - overchargeFrame) * (hp - 1.1f)/.9f);
+		}
+		string hpTexName = "ThrusterBottomHUD/thruster-bottom-hud-hp-"+n;
+		Debug.Log(hpTexName);
+		Texture hpTex = (Texture) Resources.Load(hpTexName);
+		hpRenderer.material.mainTexture = hpTex;
+
+		// energy
+		n = 0;
 		float energy = thruster.GetEnergy();
 		if (energy <= 1.1f) {
-			n = (int)Mathf.Floor(16 * (energy / 1.1f));
+			n = (int)Mathf.Floor(overchargeFrame * (energy / 1.1f));
 		} else {
-			n = 16 + (int)Mathf.Floor(8 * (energy - 1.1f)/.9f);
+			n = overchargeFrame + (int)Mathf.Floor((maxFrame - overchargeFrame) * (energy - 1.1f)/.9f);
 		}
-		string textureName = "ThrusterBottomHUD/thruster-bottom-hud-"+n;
-		Texture texture = (Texture) Resources.Load(textureName);
-		renderer.material.mainTexture = texture;
+		string energyTexName = "ThrusterBottomHUD/thruster-bottom-hud-energy-"+n;
+		Texture energyTex = (Texture) Resources.Load(energyTexName);
+		energyRenderer.material.mainTexture = energyTex;
 	}
 }

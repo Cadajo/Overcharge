@@ -1,0 +1,466 @@
+<!doctype html5>
+<head>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background: lightgray;
+        }
+        canvas {
+            width: 600px;
+            height: 600px;
+        }
+
+        #reference {
+            display: none;
+            width: 200%;
+            opacity: 0.1;
+            z-index: 1;
+            position: fixed;
+            top: -270px;
+            left: -353px;
+        }
+
+        .dg.ac {
+            z-index: 2 !important;
+        }
+    </style>
+</head>
+<body>
+<img id="reference" src="screenshot.png">
+<script type="text/javascript" src="dat.gui.min.js"></script>
+<script type="text/javascript" src="download.js"></script>
+<script>
+
+let width, height
+const canvas = document.createElement('canvas')
+const ctx = canvas.getContext('2d')
+document.body.appendChild(canvas)
+const { random, round, abs, floor, min, max, PI, sin, cos } = Math
+const start = Date.now()
+let counter
+let last = Date.now()
+
+function getRandomColor () {
+    return '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+}
+
+function ffor00 () {
+    return round(random()) ? 'ff' : '00'
+}
+
+function getRandomNeonColor () {
+    return `#${ffor00()}${ffor00()}${ffor00()}`
+}
+
+/*
+window.onresize = function () {
+    width = window.innerWidth
+    height = window.innerHeight
+    canvas.width = width * 2
+    canvas.height = height * 2
+    ctx.scale(2, 2)
+}
+window.onresize()
+*/
+
+width = height = 600
+/*
+width = window.innerWidth
+height = window.innerHeight
+/**/
+canvas.style.width = canvas.style.height = width
+canvas.width = width * 2
+canvas.height = height * 2
+ctx.scale(2, 2)
+</script>
+<!--<script src="render.js"></script>-->
+<script>
+const FPS_ENABLED = false
+function renderFPS () {
+    ctx.clearRect(0, 0, 50, 20)
+    ctx.fillStyle = 'blue'
+    ctx.fillText(delta, 20, 20)
+}
+
+function loop () {
+    requestAnimationFrame(loop)
+    counter = Date.now() - start
+    delta = Date.now() - last
+    last = Date.now()
+    window.render && render()
+    if (FPS_ENABLED) renderFPS()
+}
+ctx.fillStyle = 'white'
+ctx.fillRect(0,0,width,height)
+window.init && init()
+loop()
+
+
+// screenshot generator
+document.addEventListener('keypress', function (e) {
+    console.log(e)
+    if (e.code === "Space") screenshot()
+})
+
+let n = 0
+function screenshot () {
+    const frame = document.createElement('canvas')
+    frame.width = frame.height = p.frameEdge*2
+    const frameCtx = frame.getContext('2d')
+    frameCtx.drawImage(canvas, p.frameX*2, p.frameY*2, p.frameEdge*2, p.frameEdge*2, 0, 0, p.frameEdge*2, p.frameEdge*2)
+
+/*
+    const img = new Image()
+    img.width = img.height = frame.width
+    img.src = 
+    document.body.appendChild(img)
+    */
+    download(frame.toDataURL(), `thruster-top-hud-hp-${n++}.png`, "image/png")
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+//https://codepen.io/njmcode/pen/axoyD
+// Converts a #ffffff hex string into an [r,g,b] array
+var h2r = function(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : null;
+};
+
+// Inverse of the above
+var r2h = function(rgb) {
+    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
+};
+
+// Interpolates two [r,g,b] colors and returns an [r,g,b] of the result
+// Taken from the awesome ROT.js roguelike dev library at
+// https://github.com/ondras/rot.js
+var _interpolateColor = function(color1, color2, factor) {
+  if (arguments.length < 3) { factor = 0.5; }
+  var result = color1.slice();
+  for (var i=0;i<3;i++) {
+    result[i] = Math.round(result[i] + factor*(color2[i]-color1[i]));
+  }
+  return result;
+};
+</script>
+
+<script>
+const params = {
+    x: 320,
+    y: 277,
+    radius: 33,
+    hudRadius: 52,
+    maxHudRadius: 110,
+    hudWidth: 3,
+    hudSteps: 180,
+    arcStart: 3.2,
+    arcEnd: 5.8,
+    hp: 3.8,
+    sectionEnd: 2.8,
+    overchargeStart: 4.7,
+    hudColor: '#ffffff',
+    /*
+    sectionColorStart: '#ffc200',
+    sectionColorEnd: '#ff0000',
+    overchargeColorStart: '#ffffff',
+    overChargeColorEnd: '#0000ff',
+    */
+    sectionColorStart: '#a7eaff',
+    sectionColorEnd: '#0000ff',
+    overchargeColorStart: '#ffc200',
+    overChargeColorEnd: '#ff0000',
+    ripColor: '#000000',
+    ripAlpha: 0.6,
+    frameX: 206,
+    frameY: 173,
+    frameEdge: 170,
+    debug: false,
+    signalSteps: 10,
+    signalOffset: 3.7,
+    sectionOnly: false
+}
+const p = params
+
+function easeOutQuint (t) { return 1+(--t)*t*t*t*t }
+function easeInOutQuint (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+function easeOutCubic(t) { return (--t)*t*t+1 }
+
+let overchargedRadius = 155.2258016117966
+p.sectionEnd = p.arcStart
+p.hp = p.arcStart
+
+function render () {
+    if (p.hp > p.arcEnd + 0.1) return
+    let { x, y, arcStart, arcEnd, hudRadius, maxHudRadius, sectionEnd, sectionOnly, hp } = params
+
+    // hp constraints
+    hp = min(hp, p.arcEnd)
+    hp = max(hp, p.arcStart)
+    if (sectionOnly) {
+        hp = arcEnd
+    }
+
+    // section end constraints
+    sectionEnd = min(max(sectionEnd, p.arcStart), hp)
+
+    ctx.globalAlpha = 1
+    ctx.clearRect(0, 0, width, height)
+    ctx.beginPath()
+    ctx.lineWidth = p.hudWidth
+    ctx.fillStyle = ctx.strokeStyle = params.hudColor
+
+    if (p.debug) {
+        // frame
+        ctx.strokeRect(p.frameX, p.frameY, p.frameEdge, p.frameEdge)
+
+        // circle
+        ctx.arc(x, y, params.radius, 0, 2*PI)
+        ctx.stroke()
+    }
+
+    // fill rip
+    let maxDist = 1.57, radius
+    if (hp <= p.arcEnd && !sectionOnly) {
+        ctx.save()
+        ctx.globalAlpha = p.ripAlpha
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, hp, arcEnd)
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = p.hudColor
+        for (let i = arcEnd;
+            i >= hp;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        }
+        i = hp
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.fillStyle = p.ripColor
+        ctx.fill()
+        ctx.restore()
+    }
+
+    //section
+    maxDist = 1.57, radius
+    if (p.sectionEnd > p.arcStart) {
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, arcStart, sectionEnd)
+        const isOvercharged = (sectionEnd > p.overchargeStart)
+        const colorStart = h2r(isOvercharged
+            ? p.overchargeColorStart
+            : p.sectionColorStart)
+        const colorEnd = h2r(isOvercharged
+            ? p.overChargeColorEnd
+            : p.sectionColorEnd)
+        let first = true
+        for (let i = arcEnd;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            if (i <= sectionEnd) {
+                if (!first) {
+                    let factor = Math.min(1, (i - sectionEnd)/(arcStart - p.overchargeStart))
+                    let color = _interpolateColor(colorStart, colorEnd, factor)
+                    ctx.fillStyle = ctx.strokeStyle = r2h(color)
+                    ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+                    ctx.lineTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
+                    ctx.closePath()
+                    ctx.fill()
+                    ctx.lineWidth = 1
+                    ctx.stroke()
+                }
+                first = false
+
+                ctx.beginPath()
+                ctx.moveTo(x + hudRadius * cos(i), y + hudRadius * sin(i))
+                ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+            }
+        }
+        i = arcStart
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    // zigzag overcharge limit
+    if (p.overchargeStart < hp && !sectionOnly) {
+        ctx.save()
+        ctx.beginPath()
+        ctx.globalAlpha = 0.5
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = 'white'
+        ctx.moveTo(x + hudRadius * cos(p.overchargeStart),
+                y + hudRadius * sin(p.overchargeStart));
+        const hudWidth = overchargedRadius - hudRadius
+        for (let k = 0; k <= p.signalSteps; k++) {
+            const factor = k/p.signalSteps
+            const mult = (k % 2 == 0 ? 1 : -1)
+            ctx.lineTo(x +
+                ((hudWidth * factor) + hudRadius) * cos(p.overchargeStart)
+                + mult*p.signalOffset * cos(p.overchargeStart + PI/2),
+                y +
+                ((hudWidth * factor) + hudRadius) * sin(p.overchargeStart)
+                + mult*p.signalOffset * sin(p.overchargeStart + PI/2)
+            );
+        }
+        ctx.stroke()
+        ctx.restore()
+    }
+
+    // outline
+    if (!sectionOnly) {
+        ctx.save()
+        ctx.globalAlpha = 0.3
+        // ctx.beginPath()
+        // ctx.arc(x, y, hudRadius, arcStart, arcEnd)
+        ctx.lineWidth = p.hudWidth
+        ctx.strokeStyle = p.hudColor
+        maxDist = 1.57, radius
+        overchargedRadius = undefined
+        for (let i = arcEnd;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            //ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+            if (i < p.overchargeStart && overchargedRadius == undefined) {
+                overchargedRadius = radius
+            }
+        }
+        // ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        // ctx.closePath()
+        // ctx.stroke()
+        ctx.restore()
+    }
+    // outline hp
+    if (hp > p.arcStart && !sectionOnly) {
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(x, y, hudRadius, arcStart, hp)
+        ctx.lineWidth = p.hudWidth + 1
+        ctx.strokeStyle = p.hudColor
+        maxDist = 1.57, radius
+        for (let i = hp;
+            i >= arcStart;
+            i += (arcStart - arcEnd) / params.hudSteps) {
+            let leftDistance = abs(i - arcEnd)
+            let dist = Math.min(leftDistance, abs(arcStart - i))
+            radius = (maxHudRadius - hudRadius)
+                        * easeOutCubic(leftDistance/abs(arcStart - arcEnd))
+                        + hudRadius
+            ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        }
+        i = arcStart
+        ctx.lineTo(x + radius * cos(i), y + radius * sin(i))
+        ctx.closePath()
+        ctx.stroke()
+        ctx.restore()
+    }
+
+    screenshot()
+    p.hp += 0.1
+}
+
+document.addEventListener('mousemove', (e) => {
+    // params.offset = (e.pageX/window.innerWidth) * 50
+    // params.weight = (e.pageY/window.innerHeight) * 20
+    //params.fillDisplacement =  0.01 + (e.pageX/window.innerWidth) * 50
+    params.fillWeight = 0.01 + (e.pageY/window.innerHeight) * 20
+    params.fillDisplacement =  0.01 + (e.pageX/window.innerWidth) * 50
+})
+</script>
+    
+
+
+
+
+
+
+
+
+
+
+
+<script>
+const gui = new dat.GUI()
+for (let param in params) {
+    const value = params[param]
+    const isColor = (typeof value === 'string' && value[0] === '#')
+    if (isColor) gui.addColor(params, param)
+    else gui.add(params, param)
+}
+</script>
+</body>
