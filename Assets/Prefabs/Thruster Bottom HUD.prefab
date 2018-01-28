@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4041800591627966}
   - component: {fileID: 114634967680286824}
   m_Layer: 0
-  m_Name: Thruster HUD
+  m_Name: Thruster Bottom HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

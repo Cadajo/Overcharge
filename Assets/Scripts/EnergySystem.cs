@@ -227,6 +227,7 @@ public class EnergySystem : NetworkBehaviour {
     }
 
     void OnGUI () {
+        /*
         if (!isLocalPlayer) return;
 
         string d = "F2";
@@ -242,6 +243,7 @@ public class EnergySystem : NetworkBehaviour {
         GUI.Label(new Rect(515, 220, 100, 20),
         thrusterTopRight.GetEnergy().ToString(d)
         + "/" + thrusterTopRight.GetHP().ToString(d));
+        */
     }
 
     public void SetupColor(string color)

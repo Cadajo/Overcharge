@@ -117,7 +117,7 @@ function screenshot () {
     img.src = 
     document.body.appendChild(img)
     */
-    download(frame.toDataURL(), `thruster-bottom-hud-${n++}.png`, "image/png")
+    download(frame.toDataURL(), `thruster-top-hud-${n++}.png`, "image/png")
 }
 </script>
 
@@ -206,17 +206,17 @@ var _interpolateColor = function(color1, color2, factor) {
 
 <script>
 const params = {
-    x: 290,
-    y: 417,
-    radius: 60,
-    hudRadius: 85,
-    maxHudRadius: 180,
+    x: 320,
+    y: 277,
+    radius: 33,
+    hudRadius: 52,
+    maxHudRadius: 110,
     hudWidth: 3,
     hudSteps: 180,
-    arcStart: 1.57,
-    arcEnd: 3.8,
-    sectionEnd: 2.8,
-    overchargeStart: 3,
+    arcStart: 3.2,
+    arcEnd: 5.8,
+    sectionEnd: 3.7,
+    overchargeStart: 4.7,
     hudColor: '#ffffff',
     /*
     sectionColorStart: '#ffc200',
@@ -228,9 +228,9 @@ const params = {
     sectionColorEnd: '#0000ff',
     overchargeColorStart: '#ffc200',
     overChargeColorEnd: '#ff0000',
-    frameX: 130,
-    frameY: 360,
-    frameEdge: 240,
+    frameX: 206,
+    frameY: 173,
+    frameEdge: 170,
     debug: false,
     signalSteps: 10,
     signalOffset: 3.7
@@ -241,8 +241,10 @@ function easeOutQuint (t) { return 1+(--t)*t*t*t*t }
 function easeInOutQuint (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 function easeOutCubic(t) { return (--t)*t*t+1 }
 
+//let sectionEnd = p.arcStart
 let overchargedRadius = 155.2258016117966
 function render () {
+    //if (sectionEnd > p.arcEnd) return;
     let { x, y, arcStart, arcEnd, hudRadius, maxHudRadius, sectionEnd } = params
 
     ctx.globalAlpha = 1
@@ -352,8 +354,7 @@ function render () {
     ctx.stroke()
 
     //screenshot()
-    sectionEnd += 0.1
-    sectionEnd = min(sectionEnd, arcEnd)
+    //sectionEnd += 0.1
 }
 
 document.addEventListener('mousemove', (e) => {

@@ -17,9 +17,9 @@ public class ThrusterBottomHUD : MonoBehaviour {
 		int n = 0;
 		float energy = thruster.GetEnergy();
 		if (energy <= 1.1f) {
-			n = (int)Mathf.Floor(15 * (energy / 1.1f));
+			n = (int)Mathf.Floor(16 * (energy / 1.1f));
 		} else {
-			n = 15 + (int)Mathf.Floor(8 * (energy - 1.1f)/.9f);
+			n = 16 + (int)Mathf.Floor(8 * (energy - 1.1f)/.9f);
 		}
 		string textureName = "ThrusterBottomHUD/thruster-bottom-hud-"+n;
 		Texture texture = (Texture) Resources.Load(textureName);
