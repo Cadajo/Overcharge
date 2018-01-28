@@ -37,6 +37,9 @@ public class Thruster : MonoBehaviour
         _trail.startWidth = 0.3f * (_energy/1);
         _trail.endWidth = _trail.startWidth * 1.2f;
         _trail.time = 1f;
+        _trail.startColor = _trail.endColor = (_energy > 1.1f
+            ? Color.cyan
+            : Color.yellow);
     }
 
     public float AddEnergy(float delta)
