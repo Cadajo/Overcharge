@@ -168,7 +168,7 @@ Shader "Hidden/CRT"
 	fragCoord.y = _ScreenParams.y - fragCoord.y;
 #endif
 	float2 pos = Warp(fragCoord.xy / _ScreenParams.xy);
-	//fragColor.rgb = tex2D(_MainTex, i.uv)* Mask(fragCoord);
+	fragColor.rgb = tex2D(_MainTex, i.uv)* Mask(fragCoord);
 	fragColor.rgb = Tri(pos) *Mask(fragCoord);
 
 	return fragColor;
