@@ -18,6 +18,7 @@ public class EnergySystem : NetworkBehaviour {
     public float floatFactor = 30.0f;
     public float AccelerationFactor = 5.0f;
     private RaceController raceController;
+    public bool IsLocked = false;
 
     void Awake()
     {
@@ -110,6 +111,9 @@ public class EnergySystem : NetworkBehaviour {
 
             return;
         }
+
+        if (IsLocked)
+            return;
 
         bool changed = false;
 

@@ -78,6 +78,11 @@ public class RaceController : NetworkBehaviour
                 _countdown = false;
                 _currentCount = 5.0f;
                 _sempaphoreDisappear = true;
+
+                foreach (GameObject racer in _racers.Keys)
+                {
+                    racer.GetComponent<EnergySystem>().IsLocked = false;
+                }
             }
         }
 
@@ -103,7 +108,9 @@ public class RaceController : NetworkBehaviour
             racer.Key.transform.LookAt(transform);
             Vector3 p = racer.Key.transform.position;
             racer.Key.transform.position = new Vector3(p.x, 0.13f, p.z);
-            racer.Key.GetComponent<EnergySystem>().RestartEngine();
+            EnergySystem engine = racer.Key.GetComponent<EnergySystem>();
+            engine.RestartEngine();
+            engine.IsLocked = true;
             ++i;
         }
     }
