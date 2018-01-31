@@ -1,6 +1,8 @@
-# GGJ2018
+![](https://ggj.s3.amazonaws.com/styles/feature_image__wide/games/screenshots/3_185.png?itok=rH79RHxX&timestamp=1517154002)![](https://ggj.s3.amazonaws.com/styles/feature_image__wide/games/screenshots/8_5.png?itok=YEIWMAhI&timestamp=1517154303)
 
-Overcharged is a retro-futuristic racing game inspired by the 80s neon theme.
+# Ovecharge
+
+Overcharge is a retro-futuristic racing game inspired by the 80s neon theme.
 
 Grab the controls of your racing pod and compete against your friends through lan connection in a frenetic and crazy race.
 
