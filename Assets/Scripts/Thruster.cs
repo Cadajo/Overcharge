@@ -133,7 +133,7 @@ public class Thruster : MonoBehaviour
     }
 
     public bool IsOvercharged() {
-        return _energy > 1f;
+        return _energy > 1.01f;
     }
 
     public void SetupColor(string color)

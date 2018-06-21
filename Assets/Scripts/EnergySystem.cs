@@ -22,6 +22,7 @@ public class EnergySystem : NetworkBehaviour {
     [SyncVar] public bool IsLocked = true;
 
 
+    private AudioSource source;
     public MeshRenderer tankHUD;
 
     void Awake()
@@ -33,6 +34,7 @@ public class EnergySystem : NetworkBehaviour {
         thrusters.Add(thrusterTopRight);
 
         rigidbody = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -214,9 +216,15 @@ public class EnergySystem : NetworkBehaviour {
         /* TODO: make tendency to unflip. this doesn't work
         rigidbody.rotation = Quaternion.Euler(rigidbody.rotation.x * 0.99f, rigidbody.rotation.y, rigidbody.rotation.z * 0.99f);
         */
+        rigidbody.rotation = Quaternion.Slerp(
+            rigidbody.rotation,
+            Quaternion.Euler(0f, rigidbody.rotation.eulerAngles.y, 0f),
+            Time.time * 0.005f);
 
         // float
         rigidbody.AddForce(transform.up * floatFactor * Mathf.Max(1 - transform.position.y, 0));
+
+        bool anyOvercharged = false;
 
         thrusters.ForEach((Thruster thruster) => {
             // overcharge causes upwards bump
@@ -229,7 +237,16 @@ public class EnergySystem : NetworkBehaviour {
 
             // forward thrust
             rigidbody.AddForceAtPosition(transform.forward * energy * overcharge * AccelerationFactor, thruster.transform.position);
+
+            anyOvercharged = anyOvercharged || thruster.IsOvercharged();
         });
+
+        if (anyOvercharged) {
+            if (!source.isPlaying) source.Play();
+        } else {
+            source.Stop();
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
